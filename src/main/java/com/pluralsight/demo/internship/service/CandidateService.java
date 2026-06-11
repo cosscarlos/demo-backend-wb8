@@ -48,6 +48,13 @@ public class CandidateService {
                 .collect(Collectors.toList());
     }
 
+    public List<Candidate> searchByName(String name){
+
+        return candidateRepository.findAll().stream()
+                .filter(c -> c.getName().toLowerCase().contains(name.toLowerCase()))
+                .collect(Collectors.toList());
+    }
+
 
 }
 

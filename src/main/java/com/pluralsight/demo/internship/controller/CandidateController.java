@@ -1,6 +1,7 @@
 package com.pluralsight.demo.internship.controller;
 
 import com.pluralsight.demo.internship.model.Candidate;
+import com.pluralsight.demo.internship.model.Internship;
 import com.pluralsight.demo.internship.service.CandidateService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class CandidateController {
             @RequestParam(required = false) String fieldOfStudy) {
         List<Candidate> candidates;
         if (fieldOfStudy != null) {
-            candidates = candidateService.getCandidatesByFieldOfStudy(fieldOfStudy);
+            candidates = candidateService.getCandidatesByFieldOfStudy(fieldOfStudy.trim()); // adding trim to remove spaces
         } else {
             candidates = candidateService.getAllCandidates();
         }
@@ -36,6 +37,14 @@ public class CandidateController {
         Candidate candidate = candidateService.getCandidateById(id);
         return ResponseEntity.ok(candidate);
     }
+
+    @GetMapping("/search/name/{name}")
+    public ResponseEntity<List<Candidate>> getByName(@PathVariable String name){
+        List<Candidate> candidates = candidateService.searchByName(name);
+        return ResponseEntity.ok(candidates);
+    }
+
+
 
     @PostMapping
     public ResponseEntity<Candidate> createCandidate(@RequestBody Candidate candidate) {
